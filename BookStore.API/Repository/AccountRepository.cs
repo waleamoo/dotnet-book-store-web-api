@@ -41,7 +41,7 @@ namespace BookStore.API.Repository
             var result = await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, false, false);
             if (!result.Succeeded)
             {
-                return null;
+                return "";
             }
 
             var authClaims = new List<Claim>

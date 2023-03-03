@@ -27,7 +27,7 @@ namespace BookStore.API.Controllers
             return Unauthorized();
         }
         
-        [HttpPost("signup")]
+        [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
         {
             var result = await _accountRepository.LoginAsync(signInModel);

@@ -1,4 +1,5 @@
 using BookStore.API.Data;
+using BookStore.API.Helpers;
 using BookStore.API.Models;
 using BookStore.API.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,9 +27,17 @@ builder.Services.AddTransient<IBookRepository, BookRepository>();
 // 2. Add the db context 
 builder.Services.AddDbContext<BookStoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreDB")));
 // 4. Add auto mapper 
-builder.Services.AddAutoMapper(typeof(StartupBase));
+builder.Services.AddAutoMapper(typeof(ApplicationMapper).Assembly);
 // 5. Add Identity Core 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 4;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = false;
+    options.User.RequireUniqueEmail = true;
+})
     .AddEntityFrameworkStores<BookStoreContext>()
     .AddDefaultTokenProviders();
 // 6. Add the account repository

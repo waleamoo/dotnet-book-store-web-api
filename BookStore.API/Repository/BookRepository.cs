@@ -21,7 +21,7 @@ namespace BookStore.API.Repository
             _mapper = mapper;
         }
 
-        public async Task<List<BookModel>> GetAllBooksAsync()
+        public async Task<IEnumerable<BookModel>> GetAllBooksAsync()
         {
             //var records = await _context.Books.Select(x => new BookModel() // converts Book to BookModel
             //{
@@ -29,11 +29,11 @@ namespace BookStore.API.Repository
             //    Title = x.Title,
             //    Description = x.Description
             //}).ToListAsync();
-
             //return records;
 
             var records = await _context.Books.ToListAsync();
-            return _mapper.Map<List<BookModel>>(records);
+            var _books = _mapper.Map<IEnumerable<BookModel>>(records); // error 
+            return _books;
         }
 
         public async Task<BookModel> GetBookByIdAsync(int bookId)
@@ -95,7 +95,8 @@ namespace BookStore.API.Repository
         }
 
         public async Task DeleteBookAsync(int bookId)
-        {
+        { 
+            // hit the database only once 
             var book = new Book() { Id = bookId };
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();

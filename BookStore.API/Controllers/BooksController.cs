@@ -11,7 +11,7 @@ namespace BookStore.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IBookRepository _bookRepository;
@@ -29,7 +29,7 @@ namespace BookStore.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBookById([FromRoute] int id)
+        public async Task<IActionResult> GetBookById(int id)
         {
             var book = await _bookRepository.GetBookByIdAsync(id);
             if (book == null)
